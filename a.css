@@ -1,0 +1,16 @@
+/*Copyright 2018 Christopher Varjas - All Rights Reserved. Unauthorized copying or distribution of this file via any medium is strictly prohibited.*/
+html, body {
+    height: 100%;
+    min-width: 300px;
+}
+body, a, p, h1, h2, input, textarea, select {
+    font-family: 'Open Sans', 'sans-serif', 'Arial';
+    font-weight: 400;
+    text-decoration: none;
+    outline: none;
+}
+body {
+    margin: 0;
+    background: #000000;
+    overflow: hidden;
+}
