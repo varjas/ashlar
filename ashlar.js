@@ -11,12 +11,16 @@ let axis = {
 	z: new THREE.Vector3(0, 0, 1)
 }
 
-function rotate(data, rotation) {
-	for (object of data) {
-		// object.applyAxisAngle(axis.y, 0.1)
-		object.rotation.set(...rotation)
-	}
-}
+// function rotate(data, rotation) {
+// 	for (object of data) {
+// 		// object.applyAxisAngle(axis.y, 0.1)
+// 		object.rotation.set(...rotation)
+// 	}
+// }
+
+// function rotate(object, rotation) {
+// 	object.rotation.set(...rotation)
+// }
 
 function translate(data, position) {
 	for (object of data) {
@@ -26,7 +30,15 @@ function translate(data, position) {
 
 function render(data) {
 	for (element of data) {
-		let geometry = new THREE.BoxBufferGeometry(...element.dimensions);
+		let geometry 
+		switch (element.geometry) {
+			case 'plane':
+				geometry = new THREE.PlaneBufferGeometry(...element.dimensions)
+				break
+			case 'box':
+				geometry = new THREE.BoxBufferGeometry(...element.dimensions)
+				break
+		}
 		let material = new THREE.MeshBasicMaterial({
 			// color: 0x00aaaa,
 			color: 0x00ffff,
@@ -35,8 +47,9 @@ function render(data) {
 		})
 		mesh = new THREE.Mesh(geometry, material)
 		// scene.add(mesh)
+		// rotate([mesh], element.rotation)
+		if (element.rotation) {mesh.rotation.set(...element.rotation)}
 		pivot.add(mesh)
-		// rotate([mesh], rotationDefault)
 		translate([mesh], element.origin)
 		// console.log(mesh)
 	}
@@ -96,6 +109,7 @@ let settings = {}
 function range(size, startAt = 0) {
 	return [...Array(size).keys()].map(i => i + startAt)
 }
+
 settings = {
 	length: 10,
 	height: 4,
@@ -121,7 +135,8 @@ function wall(settings) {
 		let segmentStart = segment * segmentLength
 		output.push({
 			dimensions: [segmentLength, settings.height, settings.depth],
-			origin: [segmentStart, 0, 0]
+			origin: [segmentStart, 0, 0],
+			geometry: 'box'
 		})
 		// output.push([segmentStart, 0, 0])
 		// output.push([segmentStart + segmentLength, settings.depth, settings.height])
@@ -129,7 +144,42 @@ function wall(settings) {
 	return output
 }
 
-render(wall(settings))
+// render(wall(settings))
+
+settings = {
+	length: 50,
+	height: 0,
+	depth: 80,
+	lengthFull: 50,
+	verbose: false,
+	variance: {
+		length: 0,
+		height: 0,
+		depth: 0
+	},
+	coordinates: []
+}
+// Simple rectangular planes for now, can switch over to Shape and ShapeGeometry later to generate polygonal surfaces
+// Generate a landscape plane
+function landscape(settings) {
+	let output = [
+		// dimensions: [],
+		// origin: [0,0,0]
+	]
+
+	// let segmentStart = segment * segmentLength
+	output.push({
+		dimensions: [settings.length, settings.depth],
+		origin: [0, 0, 0],
+		geometry: 'plane',
+		rotation: [Math.PI / 2, 0, 0]
+	})
+		// output.push([segmentStart, 0, 0])
+		// output.push([segmentStart + segmentLength, settings.depth, settings.height])
+	return output
+}
+
+render(landscape(settings))
 
 settings = {
 	length: 10,
