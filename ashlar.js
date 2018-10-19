@@ -147,9 +147,9 @@ function wall(settings) {
 // render(wall(settings))
 
 settings = {
-	length: 50,
+	length: 40,
 	height: 0,
-	depth: 80,
+	depth: 60,
 	lengthFull: 50,
 	verbose: false,
 	variance: {
@@ -194,22 +194,29 @@ settings = {
 }
 function block(settings) {
 	// Need to account for an offset coordinate if necessary
-	let output = [[0,0,0]]
+	// let output = [[0,0,0]]
+	let output = []
 	// Build base plane
-	output.push([settings.length, 0, 0])
-	output.push([0, settings.depth, 0])
-	output.push([settings.length, settings.depth, 0])
+	// output.push([settings.length, 0, 0])
+	// output.push([0, settings.depth, 0])
+	// output.push([settings.length, settings.depth, 0])
 	// Build top plane
-	output.push([0, 0, settings.height])
-	output.push([settings.length, 0, settings.height])
-	output.push([0, settings.depth, settings.height])
-	output.push([settings.length, settings.depth, settings.height])
+	// output.push([0, 0, settings.height])
+	// output.push([settings.length, 0, settings.height])
+	// output.push([0, settings.depth, settings.height])
+	// output.push([settings.length, settings.depth, settings.height])
+
+	output.push({
+			dimensions: [settings.length, settings.height, settings.depth],
+			origin: [0, settings.height / 2, 0],
+			geometry: 'box'
+		})
 	return output
 }
 
 settings = {
-	length: 10,
-	height: 3,
+	length: 12,
+	height: 4,
 	depth: 10,
 	verbose: false,
 	variance: {
@@ -223,22 +230,22 @@ function residential(settings) {
 	return block(settings)
 }
 
-residential(settings)
+render(residential(settings))
 
-settings = {
+// settings = {
 	
-}
-// Generate a commercial structure
-function commercial(settings) {
+// }
+// // Generate a commercial structure
+// function commercial(settings) {
 
-}
+// }
 
 
-settings = {
+// settings = {
 	
-}
-// Generate a industrial structure
-function industrial(settings) {
+// }
+// // Generate a industrial structure
+// function industrial(settings) {
 
-}
+// }
 }
